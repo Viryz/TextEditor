@@ -1,0 +1,94 @@
+﻿<Window x:Class="WPFTextEditorApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFTextEditorApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525" Closing="Window_Closing">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="boolToVis" />
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0">
+            <MenuItem Header="File">
+                <MenuItem Header="New" Command="ApplicationCommands.New">
+                    <MenuItem.CommandBindings>
+                        <CommandBinding Command="ApplicationCommands.New" Executed="NewFile_Executed" />
+                    </MenuItem.CommandBindings>
+                </MenuItem>
+                <MenuItem Header="Open" Command="ApplicationCommands.Open">
+                    <MenuItem.CommandBindings>
+                        <CommandBinding Command="ApplicationCommands.Open" Executed="OpenFile_Executed" />
+                    </MenuItem.CommandBindings>
+                </MenuItem>
+                <MenuItem Header="Save" Command="ApplicationCommands.Save">
+                    <MenuItem.CommandBindings>
+                        <CommandBinding Command="ApplicationCommands.Save" Executed="SaveFile_Executed" />
+                    </MenuItem.CommandBindings>
+                </MenuItem>
+                <MenuItem Header="Save as" Command="ApplicationCommands.SaveAs">
+                    <MenuItem.CommandBindings>
+                        <CommandBinding Command="ApplicationCommands.SaveAs" Executed="SaveAsFile_Executed" />
+                    </MenuItem.CommandBindings>
+                </MenuItem>
+                <Separator />
+                <MenuItem Name="metuItemExit" Header="Exit" Click="metuItemExit_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Copy" Command="ApplicationCommands.Copy" CommandTarget="{Binding ElementName=textBox}"></MenuItem>
+                <MenuItem Header="Paste" Command="ApplicationCommands.Paste" CommandTarget="{Binding ElementName=textBox}"></MenuItem>
+                <MenuItem Header="Cut" Command="ApplicationCommands.Cut" CommandTarget="{Binding ElementName=textBox}"></MenuItem>
+                <Separator />
+                <MenuItem Header="Undo" Command="ApplicationCommands.Undo" CommandTarget="{Binding ElementName=textBox}"></MenuItem>
+                <MenuItem Header="Redo" Command="ApplicationCommands.Redo" CommandTarget="{Binding ElementName=textBox}"></MenuItem>
+            </MenuItem>
+            <MenuItem Name="menuItemAbout" Header="About" Click="menuItemAbout_Click"></MenuItem>
+        </Menu>
+        <ToolBar x:Name="toolBar" Grid.Row="1">
+            <ToolBar.ContextMenu>
+                <ContextMenu>
+                    <CheckBox x:Name="checkBoxCopy" Content="Copy" IsChecked="True"/>
+                    <CheckBox x:Name="checkBoxPaste" Content="Paste" IsChecked="True"/>
+                    <CheckBox x:Name="checkBoxCut" Content="Cut" IsChecked="True"/>
+                    <CheckBox x:Name="checkBoxUndo" Content="Undo" IsChecked="True"/>
+                    <CheckBox x:Name="checkBoxRedo" Content="Redo" IsChecked="True"/>
+                </ContextMenu>
+            </ToolBar.ContextMenu>
+            <Button Content="Copy" Command="Copy" CommandTarget="{Binding ElementName=textBox}" Visibility="{Binding ElementName=checkBoxCopy, Path=IsChecked, Converter={StaticResource boolToVis}}">
+                <Button.CommandBindings>
+                    <CommandBinding Command="Copy"/>
+                </Button.CommandBindings>
+            </Button>
+            <Button Content="Paste" Command="Paste" CommandTarget="{Binding ElementName=textBox}" Visibility="{Binding ElementName=checkBoxPaste, Path=IsChecked, Converter={StaticResource boolToVis}}">
+                <Button.CommandBindings>
+                    <CommandBinding Command="Paste"/>
+                </Button.CommandBindings>
+            </Button>
+            <Button Content="Cut" Command="Cut" CommandTarget="{Binding ElementName=textBox}" Visibility="{Binding ElementName=checkBoxCut, Path=IsChecked, Converter={StaticResource boolToVis}}">
+                <Button.CommandBindings>
+                    <CommandBinding Command="Cut"/>
+                </Button.CommandBindings>
+            </Button>
+            <Button Content="Undo" Command="Undo" CommandTarget="{Binding ElementName=textBox}" Visibility="{Binding ElementName=checkBoxUndo, Path=IsChecked, Converter={StaticResource boolToVis}}">
+                <Button.CommandBindings>
+                    <CommandBinding Command="Undo"/>
+                </Button.CommandBindings>
+            </Button>
+            <Button Content="Redo" Command="Redo" CommandTarget="{Binding ElementName=textBox}" Visibility="{Binding ElementName=checkBoxRedo, Path=IsChecked, Converter={StaticResource boolToVis}}">
+                <Button.CommandBindings>
+                    <CommandBinding Command="Redo"/>
+                </Button.CommandBindings>
+            </Button>
+        </ToolBar>
+        <TextBox x:Name="textBox" Grid.Row="2" AcceptsReturn="True" TextChanged="textBox_TextChanged"></TextBox>
+    </Grid>
+</Window>
